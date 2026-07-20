@@ -82,7 +82,6 @@ export default function Hero() {
     maskImage: 'radial-gradient(circle at center, black 30%, transparent 75%)',
   }}
 />
-/>
               <div className="absolute -inset-10 -z-10 rounded-full blur-3xl opacity-50" style={{ background: 'var(--hero-glow)' }} />
             </motion.div>
           </motion.div>
