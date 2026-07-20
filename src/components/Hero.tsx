@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 
 const socials = [
@@ -13,29 +13,19 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } 
 const fadeLeft  = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] as const } } };
 
 export default function Hero() {
-  // ── 1. Advanced REALISTIC CHARACTER INTERACTION SETUP ──
   const heroRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // ── التعديل الأساسي للحركة الحقيقية (REAL depth):
-  // بدلاً من الدوران البسيط، سنقوم بعمل Morphing و Distorting
-  // هذا يجعل الشخصية تبدو وكأنها تميل من زوايا مختلفة دون أن تدور الحافة.
-  const skewX = useTransform(mouseX, [-0.5, 0.5], [6, -6]); // تشويه أفقي خفيف
-  const skewY = useTransform(mouseY, [-0.5, 0.5], [-4, 4]); // تشويه رأسي خفيف
+  // بدلاً من الدوران (rotate)، نستخدم إزاحة خفيفة جداً (translate) تمنع ظهرو أي حواف أو خطوط
+  const moveX = useTransform(mouseX, [-0.5, 0.5], [-15, 15]); 
+  const moveY = useTransform(mouseY, [-0.5, 0.5], [-15, 15]); 
 
-  const perspectiveY = useTransform(mouseX, [-0.5, 0.5], [18, -18]); // دوران Perspective أفقي
-  const perspectiveX = useTransform(mouseY, [-0.5, 0.5], [-14, 14]); // دوران Perspective رأسي
+  const springConfig = { damping: 30, stiffness: 100 };
+  const smoothX = useSpring(moveX, springConfig);
+  const smoothY = useSpring(moveY, springConfig);
 
-  // إضافة زنبرك ناعم جداً
-  const springConfig = { damping: 25, stiffness: 130 }; // تقليل الـ stiffness قليلاً
-  const smoothSkewX = useSpring(skewX, springConfig);
-  const smoothSkewY = useSpring(skewY, springConfig);
-  const smoothPerspectiveX = useSpring(perspectiveX, springConfig);
-  const smoothPerspectiveY = useSpring(perspectiveY, springConfig);
-
-  // دالة معالجة حركة الماوس
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -57,15 +47,12 @@ export default function Hero() {
       ref={heroRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // تفعيل الـ Perspective من هنا لتأثير 3D أفضل
       className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ perspective: '1200px' }} 
     >
-      {/* Two-column layout: text on LEFT, character on RIGHT */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full min-h-screen flex items-center">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full pt-28 pb-20">
 
-          {/* ── LEFT: text ── */}
+          {/* LEFT: text */}
           <motion.div
             className="flex flex-col justify-center"
             variants={container}
@@ -103,47 +90,34 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* ── RIGHT: character (transparent PNG) with 3D MOUSE INTERACTION ── */}
+          {/* RIGHT: character */}
           <motion.div
             className="flex items-center justify-center order-first md:order-last"
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.22,1,0.36,1] }}
           >
-            <motion.div
-              className="relative w-full h-auto flex items-center justify-center"
-              style={{ 
-                transformStyle: 'preserve-3d',
-              }}
-            >
-              {/* glow behind the character */}
+            <div className="relative w-full h-auto flex items-center justify-center">
+              
+              {/* Glow خلف الصورة */}
               <div
                 className="absolute inset-0 -z-10 rounded-full blur-3xl opacity-50"
                 style={{ background: 'radial-gradient(circle, rgba(225,29,72,0.5), rgba(147,51,234,0.4), transparent 70%)' }}
               />
 
-              {/* The character image — background already removed (transparent PNG) */}
+              {/* الصورة مع إزاحة خفيفة فقط بدون دوران لتجنب ظهور أطراف المستطيل */}
               <motion.img
                 src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
                 alt="Mirna Shenouda"
                 className="w-auto h-auto max-w-full mix-blend-screen scale-125"
                 style={{
-                  // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
                   maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
                   WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
-
-                  // ─── الجزء الجديد للحركة الواقعية (REAL depth/Distortion) ───
-                  transformOrigin: '50% 50%', 
-                  
-                  // سنقوم بدمج الـ Skew مع الـ Rotate لخلق شعور "تغيير المنظور" الحقيقي
-                  // هذا يجعل الشخصية تبدو وكأنها تميل وتتحول (Morph) وتظهر عمق داخلي
-                  rotateX: smoothPerspectiveX,
-                  rotateY: smoothPerspectiveY,
-                  skewX: smoothSkewX,
-                  skewY: smoothSkewY,
+                  x: smoothX,
+                  y: smoothY,
                 }}
               />
-            </motion.div>
+            </div>
           </motion.div>
 
         </div>
