@@ -21,10 +21,10 @@ function App() {
     <div className="relative min-h-screen overflow-x-hidden page-bg text-white">
       
       {/* 🌟 الخلفية المتحركة للموقع كله متثبتة */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <ParticleBackground /> 
-        {/* لو الملف اسمه AnimatedBackground غيري اسم الوسم هنا كمان */}
-      </div>
+     {/* 🌟 الخلفية المتحركة للموقع كله */}
+<div className="fixed inset-0 pointer-events-none z-0">
+  <AnimatedBackground />
+</div>
 
       {/* باقي أجزاء الموقع فوق الخلفية */}
       <div className="relative z-10">
