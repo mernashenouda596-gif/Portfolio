@@ -33,7 +33,6 @@ function App() {
           <About />
           <Skills />
           <Statistics />
-          <WorkProcess />
           <LearningJourney />
           <Projects />
           <PersonalQuote />
