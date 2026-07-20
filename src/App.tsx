@@ -1,3 +1,17 @@
+import CustomCursor from './components/CustomCursor';
+
+function App() {
+  return (
+    <div className="relative cursor-none"> {/* cursor-none بتخفي ماوس الويندوز العادي */}
+      <CustomCursor />
+      
+      {/* باقي عناصر ومكونات البورتفوليو بتاعك */}
+    </div>
+  );
+}
+
+export default App;
+
 import Navbar from './components/Navbar';
 
 import ParticleBackground from './components/ParticleBackground';
