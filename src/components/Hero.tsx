@@ -79,7 +79,7 @@ export default function Hero() {
         <img
   src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
   alt="Mirna Shenouda"
-  className="w-full h-auto scale-125 mix-blend-screen translate-y-16"
+  className="w-full h-auto scale-125 mix-blend-screen translate-y-20"
   style={{
     // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
     maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
