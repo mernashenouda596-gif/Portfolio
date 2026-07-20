@@ -13,20 +13,27 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } 
 const fadeLeft  = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] as const } } };
 
 export default function Hero() {
-  // ── 1. REALISTIC CHARACTER INTERACTION SETUP ──
+  // ── 1. Advanced REALISTIC CHARACTER INTERACTION SETUP ──
   const heroRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // التحكم في مدى دوران الصورة مع حركة الماوس
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [10, -10]); // دوران أفقي
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [-8, 8]); // دوران رأسي
+  // ── التعديل الأساسي للحركة الحقيقية (REAL depth):
+  // بدلاً من الدوران البسيط، سنقوم بعمل Morphing و Distorting
+  // هذا يجعل الشخصية تبدو وكأنها تميل من زوايا مختلفة دون أن تدور الحافة.
+  const skewX = useTransform(mouseX, [-0.5, 0.5], [6, -6]); // تشويه أفقي خفيف
+  const skewY = useTransform(mouseY, [-0.5, 0.5], [-4, 4]); // تشويه رأسي خفيف
 
-  // إضافة زنبرك لنعومة الحركة أثناء تحريك الماوس
-  const springConfig = { damping: 25, stiffness: 120 }; // تقليل الـ stiffness قليلاً
-  const smoothRotateX = useSpring(rotateX, springConfig);
-  const smoothRotateY = useSpring(rotateY, springConfig);
+  const perspectiveY = useTransform(mouseX, [-0.5, 0.5], [18, -18]); // دوران Perspective أفقي
+  const perspectiveX = useTransform(mouseY, [-0.5, 0.5], [-14, 14]); // دوران Perspective رأسي
+
+  // إضافة زنبرك ناعم جداً
+  const springConfig = { damping: 25, stiffness: 130 }; // تقليل الـ stiffness قليلاً
+  const smoothSkewX = useSpring(skewX, springConfig);
+  const smoothSkewY = useSpring(skewY, springConfig);
+  const smoothPerspectiveX = useSpring(perspectiveX, springConfig);
+  const smoothPerspectiveY = useSpring(perspectiveY, springConfig);
 
   // دالة معالجة حركة الماوس
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -50,9 +57,9 @@ export default function Hero() {
       ref={heroRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // التعديل: تفعيل الـ Perspective من هنا لتأثير 3D أفضل
+      // تفعيل الـ Perspective من هنا لتأثير 3D أفضل
       className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ perspective: '1500px' }} 
+      style={{ perspective: '1200px' }} 
     >
       {/* Two-column layout: text on LEFT, character on RIGHT */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full min-h-screen flex items-center">
@@ -104,7 +111,6 @@ export default function Hero() {
             transition={{ duration: 1, ease: [0.22,1,0.36,1] }}
           >
             <motion.div
-              // التعديل: إزالة الـ max-w والتأثيرات الأخرى التي كانت تجعلها تبدو كـ "صورة"
               className="relative w-full h-auto flex items-center justify-center"
               style={{ 
                 transformStyle: 'preserve-3d',
@@ -116,24 +122,25 @@ export default function Hero() {
                 style={{ background: 'radial-gradient(circle, rgba(225,29,72,0.5), rgba(147,51,234,0.4), transparent 70%)' }}
               />
 
-              {/* The character image element only, which we will now animate separately */}
+              {/* The character image — background already removed (transparent PNG) */}
               <motion.img
                 src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
                 alt="Mirna Shenouda"
-                // التعديل: إزالة كل تأثيرات الـ scale والـ mask من الـ img العادي
                 className="w-auto h-auto max-w-full mix-blend-screen scale-125"
                 style={{
                   // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
                   maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
                   WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
 
-                  // ─── الجزء الجديد للحركة الواقعية للكراكتر ───
-                  // 1. تحديد نقطة الدوران في المنتصف (Central pivot for 3D)
+                  // ─── الجزء الجديد للحركة الواقعية (REAL depth/Distortion) ───
                   transformOrigin: '50% 50%', 
                   
-                  // 2. ربط الدوران التفاعلي بالماوس مباشرة على الـ image element
-                  rotateX: smoothRotateX,
-                  rotateY: smoothRotateY,
+                  // سنقوم بدمج الـ Skew مع الـ Rotate لخلق شعور "تغيير المنظور" الحقيقي
+                  // هذا يجعل الشخصية تبدو وكأنها تميل وتتحول (Morph) وتظهر عمق داخلي
+                  rotateX: smoothPerspectiveX,
+                  rotateY: smoothPerspectiveY,
+                  skewX: smoothSkewX,
+                  skewY: smoothSkewY,
                 }}
               />
             </motion.div>
