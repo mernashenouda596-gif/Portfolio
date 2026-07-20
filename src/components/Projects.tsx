@@ -9,7 +9,7 @@ const projects = [
     features:['Subject Management','Smart Task Management','Deadlines & Calendar','Notes System','Pomodoro Timer','Focus Farm','Study Analytics','AI-Powered Productivity Features','Responsive Design'],
     stack:['React','JavaScript','Bootstrap','Vite','Git','GitHub','Vercel'],
     live:'https://study-verse-oogy.vercel.app', github:'https://github.com/mernashenouda596-gif/StudyVerse.git',
-    image:'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: '/images/projects/StudyVerse.png',
   },
   {
     name:'+ToDo', tag:'Smart Productivity & Task Management',
@@ -17,7 +17,7 @@ const projects = [
     features:['Task Management','Habit Tracking','Progress Analytics','Productivity Dashboard','Workspace Organization','Notes Management','AI Companion','Responsive Design'],
     stack:['React','JavaScript','Bootstrap','Vite','Git','GitHub','Vercel'],
     live:'https://todo-premium-saas.vercel.app/', github:'https://github.com/mernashenouda596-gif/todo-premium-saas.git',
-    image:'https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    image: '/images/projects/ToDo.png',
   },
 ];
 
