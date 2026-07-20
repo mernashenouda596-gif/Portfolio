@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
-import ParticleBackground from './components/ParticleBackground';
+
+import AnimatedBackground from './components/AnimatedBackground';
 // لو اسم الملف عندك AnimatedBackground استخدمي السطر اللي تحته بدل ParticleBackground:
 // import AnimatedBackground from './components/AnimatedBackground';
 
