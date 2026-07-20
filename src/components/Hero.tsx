@@ -82,8 +82,8 @@ export default function Hero() {
   className="w-full h-auto scale-125 mix-blend-screen origin-bottom"
   style={{
     // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
-    maskImage: 'radial-gradient(circle at center, black 65%, transparent 75%)',
-WebkitMaskImage: 'radial-gradient(circle at center, black 65%, transparent 75%)'
+    maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
+WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)'
   }}
 />
  
