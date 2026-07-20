@@ -18,11 +18,13 @@ export default function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // إزاحة وحركة 3D Tilt للكرت والصورة متجاوبة مع الماوس
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [15, -15]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
-  const moveX = useTransform(mouseX, [-0.5, 0.5], [-20, 20]); 
-  const moveY = useTransform(mouseY, [-0.5, 0.5], [-20, 20]); 
+  // حسابات الدوران والتحريك للكاراكتر بس
+  // دوران (Tilt) خفيف عشان يبان الـ depth
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
+  // تحريك (Translate) عشان يخرج لبرة
+  const moveX = useTransform(mouseX, [-0.5, 0.5], [-30, 30]); 
+  const moveY = useTransform(mouseY, [-0.5, 0.5], [-30, 30]); 
 
   const springConfig = { damping: 25, stiffness: 120 };
   const smoothRotateX = useSpring(rotateX, springConfig);
@@ -145,38 +147,33 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT: 3D Tilt Character Card */}
+          {/* RIGHT: Static Frame + 3D Moving Character */}
           <motion.div
             className="flex items-center justify-center order-first md:order-last perspective-[1000px]"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.22,1,0.36,1] }}
           >
-            <motion.div 
+            {/* الإطار الخلفي الثابت */}
+            <div 
               className="relative w-full max-w-[460px] p-6 rounded-3xl backdrop-blur-xl border border-rose-500/30 shadow-[0_0_50px_rgba(225,29,72,0.25)]"
               style={{
                 background: 'linear-gradient(145deg, rgba(30, 10, 45, 0.7), rgba(15, 5, 25, 0.8))',
-                rotateX: smoothRotateX,
-                rotateY: smoothRotateY,
-                transformStyle: 'preserve-3d',
               }}
             >
-              {/* Neon Glow خلف الصورة داخل الكرت */}
+              {/* Neon Glow خلف الصورة داخل الكرت (ثابت) */}
               <div
                 className="absolute inset-0 -z-10 rounded-3xl blur-2xl opacity-60 pointer-events-none"
                 style={{ background: 'radial-gradient(circle, rgba(225,29,72,0.6), rgba(138,43,226,0.5), transparent 70%)' }}
               />
 
-              {/* Floating UI Badge - Cyberpunk Style */}
-              <motion.div 
-                className="absolute -top-4 -right-2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-fuchsia-500/40 bg-purple-950/80 backdrop-blur-md shadow-lg text-xs font-semibold text-fuchsia-300"
-                style={{ transform: 'translateZ(40px)', x: smoothX, y: smoothY }}
-              >
+              {/* Floating UI Badge -Cyberpunk Style (ثابتة في الإطار) */}
+              <div className="absolute -top-4 -right-2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-fuchsia-500/40 bg-purple-950/80 backdrop-blur-md shadow-lg text-xs font-semibold text-fuchsia-300">
                 <Sparkles size={14} className="text-rose-400 animate-spin" />
                 <span>Creative Developer</span>
-              </motion.div>
+              </div>
 
-              {/* Character Image */}
+              {/* الكاراكتر هو الوحيد اللي بيتحرك وبيميل */}
               <motion.img
                 src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
                 alt="Mirna Shenouda"
@@ -184,12 +181,15 @@ export default function Hero() {
                 style={{
                   maskImage: 'radial-gradient(circle at center, black 50%, transparent 85%)',
                   WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 85%)',
-                  transform: 'translateZ(30px)',
+                  // تطبيق الحركة والدوران هنا بس
+                  rotateX: smoothRotateX,
+                  rotateY: smoothRotateY,
                   x: smoothX,
                   y: smoothY,
+                  transformStyle: 'preserve-3d',
                 }}
               />
-            </motion.div>
+            </div>
           </motion.div>
 
         </div>
