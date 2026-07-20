@@ -1,16 +1,27 @@
-import CustomCursor from './components/CustomCursor';
+// 1. استدعاء الماوس (بافترض إنك عملتي الملف)
+import CustomCursor from './components/CustomCursor'; 
+// استدعاءات تانية...
+import Hero from './components/Hero';
 
+// تعريف App واحد بس
 function App() {
   return (
-    <div className="relative cursor-none"> {/* cursor-none بتخفي ماوس الويندوز العادي */}
+    // cursor-none مهمة عشان تخفي ماوس الويندوز
+    <div className="relative min-h-screen bg-[#0b0512] text-white cursor-none"> 
+      
+      {/* 2. حطي الماوس هنا في الأول */}
       <CustomCursor />
       
-      {/* باقي عناصر ومكونات البورتفوليو بتاعك */}
+      {/* باقي المكونات */}
+      <Hero />
+      {/* <About /> */}
+      {/* <Projects /> */}
     </div>
   );
 }
 
 export default App;
+
 
 import Navbar from './components/Navbar';
 
