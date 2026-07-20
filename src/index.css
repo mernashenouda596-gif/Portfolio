@@ -46,8 +46,5 @@ body { font-family: 'Inter', sans-serif; background-color: #0d0414; color: #f4f4
 }
 
 section:not(#home) {
-  background:
-    radial-gradient(ellipse 90% 50% at 15% 40%, rgba(147,51,234,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 50% at 85% 60%, rgba(225,29,72,0.16) 0%, transparent 55%),
-    #0d0414;
+  background: transparent;
 }
