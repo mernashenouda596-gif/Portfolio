@@ -77,7 +77,7 @@ export default function Hero() {
   className="w-full h-auto select-none"
   style={{
     filter: 'var(--hero-drop-shadow)',
-    WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
+    WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 80%)',
     maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)'
   }}
 />
