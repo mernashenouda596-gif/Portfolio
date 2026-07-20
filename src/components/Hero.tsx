@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useRef } from 'react';
 import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 
 const socials = [
-  { icon: Github,   href: 'https://github.com/mernashenouda596-gif',              label: 'GitHub' },
+  { icon: Github,   href: 'https://github.com/mernashenouda596-gif',           label: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/merna-shenouda-691053409', label: 'LinkedIn' },
   { icon: Mail,     href: 'mailto:mernashenouda596@gmail.com',                    label: 'Email' },
 ];
@@ -12,8 +13,44 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } 
 const fadeLeft  = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] as const } } };
 
 export default function Hero() {
+  // ── 1. MOUSE INTERACTION SETUP ──
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // التحكم في مدى دوران الصورة مع حركة الماوس
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [18, -18]); // دوران أفقي
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [-18, 18]); // دوران رأسي
+
+  // إضافة زنبرك (Spring) لنعومة الحركة أثناء تحريك الماوس
+  const springConfig = { damping: 25, stiffness: 150 };
+  const smoothRotateX = useSpring(rotateX, springConfig);
+  const smoothRotateY = useSpring(rotateY, springConfig);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
+    const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
+
+    mouseX.set(relativeX);
+    mouseY.set(relativeY);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section 
+      id="home" 
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative min-h-screen flex items-center overflow-hidden"
+    >
       {/* Two-column layout: text on LEFT, character (transparent PNG) on RIGHT with 3D motion */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full min-h-screen flex items-center">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full pt-28 pb-20">
@@ -56,7 +93,7 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* ── RIGHT: character (transparent PNG) with 3D motion ── */}
+          {/* ── RIGHT: character (transparent PNG) with 3D MOUSE INTERACTION ── */}
           <motion.div
             className="flex items-center justify-center order-first md:order-last"
             initial={{ opacity: 0, x: 80 }}
@@ -66,27 +103,23 @@ export default function Hero() {
           >
             <motion.div
               className="relative w-full max-w-[440px]"
-              style={{ transformStyle: 'preserve-3d' }}
-              animate={{
-                y: [0, -22, 0],
-                rotateY: [10, -8, 10],
-                rotateX: [3, -3, 3],
-                scale: [1, 1.05, 1],
+              style={{ 
+                transformStyle: 'preserve-3d',
+                rotateX: smoothRotateX,
+                rotateY: smoothRotateY,
               }}
-              transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
             >
               {/* The character image — background already removed (transparent PNG) */}
-        <img
-  src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
-  alt="Mirna Shenouda"
-  className="w-full h-auto scale-125 mix-blend-screen translate-y-1"
-  style={{
-    // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
-    maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
-WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)'
-  }}
-/>
- 
+              <img
+                src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
+                alt="Mirna Shenouda"
+                className="w-full h-auto scale-125 mix-blend-screen translate-y-1"
+                style={{
+                  maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)'
+                }}
+              />
+
               {/* glow behind the character */}
               <div
                 className="absolute -inset-10 -z-10 rounded-full blur-3xl opacity-50"
