@@ -1,5 +1,8 @@
 import Navbar from './components/Navbar';
 import ParticleBackground from './components/ParticleBackground';
+// لو اسم الملف عندك AnimatedBackground استخدمي السطر اللي تحته بدل ParticleBackground:
+// import AnimatedBackground from './components/AnimatedBackground';
+
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -14,9 +17,16 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden page-bg">
-      <ParticleBackground />
-      <div className="relative" style={{ zIndex: 1 }}>
+    <div className="relative min-h-screen overflow-x-hidden page-bg text-white">
+      
+      {/* 🌟 الخلفية المتحركة للموقع كله متثبتة */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <ParticleBackground /> 
+        {/* لو الملف اسمه AnimatedBackground غيري اسم الوسم هنا كمان */}
+      </div>
+
+      {/* باقي أجزاء الموقع فوق الخلفية */}
+      <div className="relative z-10">
         <Navbar />
         <main>
           <Hero />
@@ -32,6 +42,7 @@ function App() {
         </main>
         <Footer />
       </div>
+
     </div>
   );
 }
