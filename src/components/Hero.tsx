@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 
 const socials = [
@@ -13,21 +13,22 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } 
 const fadeLeft  = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22,1,0.36,1] as const } } };
 
 export default function Hero() {
-  // ── 1. MOUSE INTERACTION SETUP ──
+  // ── 1. REALISTIC CHARACTER INTERACTION SETUP ──
   const heroRef = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   // التحكم في مدى دوران الصورة مع حركة الماوس
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [18, -18]); // دوران أفقي
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [-18, 18]); // دوران رأسي
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [10, -10]); // دوران أفقي
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [-8, 8]); // دوران رأسي
 
-  // إضافة زنبرك (Spring) لنعومة الحركة أثناء تحريك الماوس
-  const springConfig = { damping: 25, stiffness: 150 };
+  // إضافة زنبرك لنعومة الحركة أثناء تحريك الماوس
+  const springConfig = { damping: 25, stiffness: 120 }; // تقليل الـ stiffness قليلاً
   const smoothRotateX = useSpring(rotateX, springConfig);
   const smoothRotateY = useSpring(rotateY, springConfig);
 
+  // دالة معالجة حركة الماوس
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -49,9 +50,11 @@ export default function Hero() {
       ref={heroRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      // التعديل: تفعيل الـ Perspective من هنا لتأثير 3D أفضل
       className="relative min-h-screen flex items-center overflow-hidden"
+      style={{ perspective: '1500px' }} 
     >
-      {/* Two-column layout: text on LEFT, character (transparent PNG) on RIGHT with 3D motion */}
+      {/* Two-column layout: text on LEFT, character on RIGHT */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full min-h-screen flex items-center">
         <div className="grid md:grid-cols-2 gap-8 items-center w-full pt-28 pb-20">
 
@@ -99,31 +102,39 @@ export default function Hero() {
             initial={{ opacity: 0, x: 80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.22,1,0.36,1] }}
-            style={{ perspective: '1200px' }}
           >
             <motion.div
-              className="relative w-full max-w-[440px]"
+              // التعديل: إزالة الـ max-w والتأثيرات الأخرى التي كانت تجعلها تبدو كـ "صورة"
+              className="relative w-full h-auto flex items-center justify-center"
               style={{ 
                 transformStyle: 'preserve-3d',
-                rotateX: smoothRotateX,
-                rotateY: smoothRotateY,
               }}
             >
-              {/* The character image — background already removed (transparent PNG) */}
-              <img
-                src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
-                alt="Mirna Shenouda"
-                className="w-full h-auto scale-125 mix-blend-screen translate-y-1"
-                style={{
-                  maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
-                  WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)'
-                }}
-              />
-
               {/* glow behind the character */}
               <div
-                className="absolute -inset-10 -z-10 rounded-full blur-3xl opacity-50"
+                className="absolute inset-0 -z-10 rounded-full blur-3xl opacity-50"
                 style={{ background: 'radial-gradient(circle, rgba(225,29,72,0.5), rgba(147,51,234,0.4), transparent 70%)' }}
+              />
+
+              {/* The character image element only, which we will now animate separately */}
+              <motion.img
+                src="/images/projects/A55f587940bf34fae8297a6fd65bff62bk copy copy copy.png"
+                alt="Mirna Shenouda"
+                // التعديل: إزالة كل تأثيرات الـ scale والـ mask من الـ img العادي
+                className="w-auto h-auto max-w-full mix-blend-screen scale-125"
+                style={{
+                  // ده هو السحر، بيعمل تدرج يخلي الحواف تختفي
+                  maskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
+                  WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 75%)',
+
+                  // ─── الجزء الجديد للحركة الواقعية للكراكتر ───
+                  // 1. تحديد نقطة الدوران في المنتصف (Central pivot for 3D)
+                  transformOrigin: '50% 50%', 
+                  
+                  // 2. ربط الدوران التفاعلي بالماوس مباشرة على الـ image element
+                  rotateX: smoothRotateX,
+                  rotateY: smoothRotateY,
+                }}
               />
             </motion.div>
           </motion.div>
