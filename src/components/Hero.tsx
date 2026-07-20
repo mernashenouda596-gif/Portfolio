@@ -70,16 +70,18 @@ export default function Hero() {
               animate={{ y: [0, -22, 0], rotateY: [10, -8, 10], rotateX: [3, -3, 3], scale: [1, 1.05, 1] }}
               transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
             >
-             <img
+           <img
   src="/hero.png"
   alt="Cyberpunk character"
   draggable={false}
-  className="w-full h-auto select-none"
+  className="w-full h-auto select-none mix-blend-screen"
   style={{
+    // الميكس ده هيطير أي لون أسود أو حواف غامقة في أصل الصورة
     filter: 'var(--hero-drop-shadow)',
-    WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 95%)',
-    maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)'
+    WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 75%)',
+    maskImage: 'radial-gradient(circle at center, black 30%, transparent 75%)',
   }}
+/>
 />
               <div className="absolute -inset-10 -z-10 rounded-full blur-3xl opacity-50" style={{ background: 'var(--hero-glow)' }} />
             </motion.div>
