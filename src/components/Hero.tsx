@@ -77,8 +77,8 @@ export default function Hero() {
   className="w-full h-auto select-none"
   style={{
     filter: 'var(--hero-drop-shadow)',
-    WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 80%)',
-    maskImage: 'linear-gradient(to bottom, black 60%, transparent 80%)'
+    WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+    maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)'
   }}
 />
               <div className="absolute -inset-10 -z-10 rounded-full blur-3xl opacity-50" style={{ background: 'var(--hero-glow)' }} />
