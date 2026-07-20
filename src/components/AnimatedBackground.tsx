@@ -10,7 +10,7 @@ export default function AnimatedBackground() {
     const ctx = cv.getContext('2d'); if(!ctx) return;
     let id:number; let t=0; let H=document.body.scrollHeight;
     const rs=()=>{ H=document.body.scrollHeight; cv.width=innerWidth; cv.height=H; }; rs();
-   (Math.random()-.5)*.35,size:Math.random()*2.2+.4,opacity:Math.random()*.45+.1,ci:Math.floor(Math.random()*PALETTE.length)}));
+   const ps:P[]=Array.from({length:70},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*1.2,vy:(Math.random()-.5)*1.2,size:Math.random()*2.2+.4,opacity:Math.random()*.45+.1,ci:Math.floor(Math.random()*PALETTE.length)}));
     const rs2:R[]=[]; const cc=Math.ceil(H/700);
     for(let i=0;i<cc;i++){ const cy=(i+.5)*(H/cc); const cx=i%2?cv.width*.8:cv.width*.2; [240,320,420,540].forEach((r,j)=>rs2.push({cx,cy,r,s:(j%2?-.12:.15)*(.8+Math.random()*.4),o:Math.random()*Math.PI*2,c:j<2?'rgba(225,29,72,':j===2?'rgba(147,51,234,':'rgba(253,164,175,',w:j%2?1.2:.7,d:j%2!==0})); }
     const ws:W[] = Array.from({length:10},(_,i)=>({y:(i/10)*H,a:60+Math.random()*80,f:.004+Math.random()*.003,s:.3+Math.random()*.4,p:Math.random()*Math.PI*2,c:i%3===0?'rgba(225,29,72,':i%3===1?'rgba(147,51,234,':'rgba(253,164,175,',o:.04+Math.random()*.04}));
