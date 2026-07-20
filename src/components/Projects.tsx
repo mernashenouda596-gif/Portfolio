@@ -16,7 +16,10 @@ const projects = [
     description:'+ToDo is a modern task management application built to simplify daily planning and improve productivity. It enables users to organize tasks, track personal habits, monitor progress, and build consistent routines through a clean interface and an intuitive user experience.',
     features:['Task Management','Habit Tracking','Progress Analytics','Productivity Dashboard','Workspace Organization','Notes Management','AI Companion','Responsive Design'],
     stack:['React','JavaScript','Bootstrap','Vite','Git','GitHub','Vercel'],
-    live:'https://todo-premium-saas.vercel.app/', github:'https://github.com/mernashenouda596-gif/todo-premium-saas.git',  },
+    live:'https://todo-premium-saas.vercel.app/',
+    github:'https://github.com/mernashenouda596-gif/todo-premium-saas.git',
+    image: '/images/projects/ToDo.png',
+  },
 ];
 
 export default function Projects() {
