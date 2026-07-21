@@ -6,7 +6,6 @@ import Skills from './components/Skills';
 import Statistics from './components/Statistics';
 import WorkProcess from './components/WorkProcess';
 import LearningJourney from './components/LearningJourney';
-import LaptopShowcase from './components/LaptopShowcase';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import CTA from './components/CTA';
@@ -26,7 +25,6 @@ function App() {
           <Statistics />
           <WorkProcess />
           <LearningJourney />
-          <LaptopShowcase />
           <Projects />
           <PersonalQuote />
           <Contact />
